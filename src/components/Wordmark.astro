@@ -1,0 +1,25 @@
+---
+import { withBasePath } from "../lib/paths";
+import { CANONICAL_NAME, DISPLAY_NAME } from "./branding";
+
+interface Props {
+  variant: "cover" | "small";
+}
+
+const { variant } = Astro.props;
+const wordmarkSource = withBasePath("wordmark.svg");
+---
+
+{
+  variant === "cover" ? (
+    <h1 class="wordmark wordmark--cover">
+      <img src={wordmarkSource} width="1000" height="420" alt={DISPLAY_NAME} />
+      <span class="wordmark-subtitle">(a cookbook)</span>
+    </h1>
+  ) : (
+    <a class="wordmark wordmark--small" href={withBasePath("")} aria-label={`${CANONICAL_NAME} — home`}>
+      <img src={wordmarkSource} width="1000" height="420" alt="" />
+      <span class="wordmark-subtitle" aria-hidden="true">(a cookbook)</span>
+    </a>
+  )
+}

@@ -1,0 +1,53 @@
+---
+import type { MarkdownHeading } from "astro";
+import type { LibraryEntry } from "../domain/library";
+import { collectionPath } from "../lib/paths";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  entry: LibraryEntry;
+  headings?: readonly MarkdownHeading[];
+}
+
+const { entry, headings = [] } = Astro.props;
+const sectionHeadings = headings.filter(({ depth }) => depth === 2 || depth === 3);
+const collectionLabel = entry.kind === "guide" ? "guides" : "recipes";
+---
+
+<BaseLayout title={entry.title} activeKind={entry.kind} wide>
+  <article class="article-shell" data-article-tools>
+    <aside class="article-sidebar">
+      <div class="article-sidebar__inner">
+        <a class="article-back" href={collectionPath(entry.kind)}>Back to {collectionLabel}</a>
+        {
+          sectionHeadings.length > 0 && (
+            <nav class="article-toc" aria-labelledby="article-toc-title">
+              <h2 class="article-toc__title" id="article-toc-title">On this page</h2>
+              <ol class="article-toc__list">
+                {sectionHeadings.map((heading) => (
+                  <li class:list={["article-toc__item", `article-toc__item--depth-${heading.depth}`]}>
+                    <a href={`#${heading.slug}`}>{heading.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
+      </div>
+    </aside>
+
+    <div class="article-content">
+      <header class="article-header">
+        <h1 class="article-title">{entry.title}</h1>
+        <p class="article-attribution">By {entry.author}</p>
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  import "../scripts/article-tools";
+</script>

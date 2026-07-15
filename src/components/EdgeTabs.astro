@@ -1,0 +1,28 @@
+---
+import type { CollectionKind } from "../domain/library";
+import { collectionPath } from "../lib/paths";
+
+interface Props {
+  activeKind?: CollectionKind;
+}
+
+const { activeKind } = Astro.props;
+const tabs = [
+  { kind: "guide", label: "Guides" },
+  { kind: "recipe", label: "Recipes" },
+] as const;
+---
+
+<nav class="edge-tabs" aria-label="Collections">
+  {
+    tabs.map((tab) => (
+      <a
+        class:list={["edge-tab", `edge-tab--${tab.kind}`]}
+        href={collectionPath(tab.kind)}
+        aria-current={activeKind === tab.kind ? "location" : undefined}
+      >
+        {tab.label}
+      </a>
+    ))
+  }
+</nav>

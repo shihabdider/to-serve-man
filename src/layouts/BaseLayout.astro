@@ -1,0 +1,47 @@
+---
+import EdgeTabs from "../components/EdgeTabs.astro";
+import Wordmark from "../components/Wordmark.astro";
+import { CANONICAL_NAME } from "../components/branding";
+import type { CollectionKind } from "../domain/library";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  activeKind?: CollectionKind;
+  cover?: boolean;
+  wide?: boolean;
+}
+
+const { title, activeKind, cover = false, wide = false } = Astro.props;
+const documentTitle = title === undefined ? CANONICAL_NAME : `${title} — ${CANONICAL_NAME}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content={cover ? "#111111" : "#ffffff"} />
+    <meta name="description" content={CANONICAL_NAME} />
+    <link rel="canonical" href={Astro.url} />
+    <title>{documentTitle}</title>
+  </head>
+  <body class:list={{ "is-cover": cover }}>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class:list={["book-frame", { "book-frame--cover": cover }]}>
+      <div class="book">
+        {
+          !cover && (
+            <header class="site-header">
+              <Wordmark variant="small" />
+            </header>
+          )
+        }
+        <main id="main-content" class:list={["site-main", { "site-main--cover": cover, "site-main--wide": wide }]}>
+          <slot />
+        </main>
+      </div>
+      <EdgeTabs activeKind={activeKind} />
+    </div>
+  </body>
+</html>

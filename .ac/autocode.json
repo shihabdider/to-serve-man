@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "feedbackCadence": "agile",
+  "traceability": "opaque",
+  "constraints": [
+    "Production output must remain static and require no application server.",
+    "Content must remain Markdown-authored and independent from presentation code."
+  ],
+  "checks": [
+    {
+      "name": "verify",
+      "argv": ["npm", "run", "verify"],
+      "category": "engineering",
+      "blocking": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+---
+import CollectionLayout from "../../layouts/CollectionLayout.astro";
+import { getLibraryEntries } from "../../lib/content-library";
+
+const entries = await getLibraryEntries("guide");
+---
+
+<CollectionLayout kind="guide" entries={entries} />

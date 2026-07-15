@@ -1,0 +1,22 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import { getLibraryDocument, getLibraryEntries } from "../../lib/content-library";
+
+export const getStaticPaths = (async () => {
+  const entries = await getLibraryEntries("guide");
+  return entries.map((entry) => ({ params: { slug: entry.slug } }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+if (slug === undefined) throw new Error("Missing guide slug for static article route");
+
+const document = await getLibraryDocument("guide", slug);
+if (document === undefined) throw new Error(`Missing guide document for slug: ${slug}`);
+
+const { Content } = document.rendered;
+---
+
+<ArticleLayout entry={document.entry} headings={document.rendered.headings}>
+  <Content />
+</ArticleLayout>

@@ -1,0 +1,17 @@
+---
+import CatalogIndex from "../components/CatalogIndex.astro";
+import type { CollectionKind, LibraryEntry } from "../domain/library";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  kind: CollectionKind;
+  entries: readonly LibraryEntry[];
+}
+
+const { kind, entries } = Astro.props;
+const title = kind === "guide" ? "Guides" : "Recipes";
+---
+
+<BaseLayout title={title} activeKind={kind}>
+  <CatalogIndex kind={kind} entries={entries} />
+</BaseLayout>

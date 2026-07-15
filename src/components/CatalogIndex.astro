@@ -1,0 +1,71 @@
+---
+import { INITIAL_CATALOG_STATE, viewCatalog } from "../domain/catalog";
+import { libraryEntryIdentity, type CollectionKind, type LibraryEntry } from "../domain/library";
+import { collectionPath } from "../lib/paths";
+
+interface Props {
+  kind: CollectionKind;
+  entries: readonly LibraryEntry[];
+}
+
+const { kind, entries } = Astro.props;
+const catalog = viewCatalog(entries, INITIAL_CATALOG_STATE);
+const label = kind === "guide" ? "Guides" : "Recipes";
+const inputId = `title-filter-${kind}`;
+const listId = `${kind}-catalog`;
+const statusId = `${kind}-filter-status`;
+---
+
+<section class="collection" aria-labelledby={`${kind}-heading`} data-title-filter>
+  <header class="collection-header">
+    <h1 class="collection-title" id={`${kind}-heading`}>{label}</h1>
+  </header>
+
+  <div class="title-filter">
+    <label class="visually-hidden" for={inputId}>Search {label.toLocaleLowerCase("en")} by title</label>
+    <div class="title-filter__control">
+      <svg class="title-filter__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5"></circle>
+        <path d="m16 16 4 4"></path>
+      </svg>
+      <input
+        id={inputId}
+        type="search"
+        inputmode="search"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Search titles"
+        aria-controls={listId}
+        aria-describedby={statusId}
+        disabled
+        data-filter-input
+      />
+    </div>
+    <p class="filter-status" id={statusId} role="status" aria-live="polite" data-filter-status></p>
+  </div>
+
+  {
+    catalog.entries.length > 0 ? (
+      <ul class="catalog-list" id={listId}>
+        {catalog.entries.map((entry) => (
+          <li
+            class="catalog-entry"
+            data-catalog-entry
+            data-entry-id={libraryEntryIdentity(entry)}
+            data-kind={entry.kind}
+            data-slug={entry.slug}
+            data-title={entry.title}
+          >
+            <a href={collectionPath(entry.kind, entry.slug)}>{entry.title}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="empty-collection" id={listId}>No {label.toLocaleLowerCase("en")} have been published.</p>
+    )
+  }
+</section>
+
+<script>
+  import "../scripts/title-filter";
+</script>
