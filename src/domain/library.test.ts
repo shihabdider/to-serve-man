@@ -9,18 +9,18 @@ import {
 
 const validCandidate: LibraryEntryCandidate = {
   kind: "recipe",
-  slug: "context-engineering",
-  title: "Context Engineering",
+  slug: "variant-review-prompt",
+  title: "Variant Review Prompt",
   author: "Shihab Dider",
-  body: "Keep only the context that serves the current task.",
+  body: "Review the supplied synthetic variants and report unsupported claims.",
 };
 
 describe("createLibraryEntry", () => {
   it("accepts and trims every text field", () => {
     expect(createLibraryEntry({
       ...validCandidate,
-      slug: "  context-engineering  ",
-      title: "  Context Engineering  ",
+      slug: "  variant-review-prompt  ",
+      title: "  Variant Review Prompt  ",
       author: "  Shihab Dider  ",
       body: "  Useful body.  ",
     })).toEqual({ ...validCandidate, body: "Useful body." });
@@ -28,7 +28,7 @@ describe("createLibraryEntry", () => {
 
   it.each([
     ["slug", ""],
-    ["slug", "Context Engineering"],
+    ["slug", "Variant Review Prompt"],
     ["slug", "nested/context"],
     ["title", "   "],
     ["author", "\n"],
@@ -40,7 +40,7 @@ describe("createLibraryEntry", () => {
 
 describe("entry identity and uniqueness", () => {
   it("combines collection kind and slug", () => {
-    expect(libraryEntryIdentity(validCandidate)).toBe("recipe/context-engineering");
+    expect(libraryEntryIdentity(validCandidate)).toBe("recipe/variant-review-prompt");
   });
 
   it("preserves an empty or unique list", () => {

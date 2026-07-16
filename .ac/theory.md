@@ -37,12 +37,13 @@ Appetite: one to two focused working days. The human approved assuming AI accele
 
 Build a minimal black-and-white static site with:
 
-- Markdown-authored guides and reusable recipes, prompts, and skills.
+- Markdown-authored Guides for explanatory articles and Recipes that each begin with a brief author abstract followed by exactly one complete prompt or agent skill in a copyable fenced block.
 - Peer Guides and Recipes collections selected through vertical tabs on the right edge, like cookbook index tabs.
 - Alphabetical, independent entries with a title filter for the active collection; no authored ranking or sequential navigation.
 - Automatic indexes and navigation generated from the content.
+- Compact validated links between entries, authored as `[[{guide|recipe}:name#section|custom text]]` and rewritten to deployment-aware routes during the static build.
 - Git-based contribution instructions for lab members.
-- Draft recipes for Context Engineering, Alignment, and Domain-Specific Languages.
+- Draft Guides for Context Engineering, Alignment, Domain-Specific Languages, and First Principles.
 - A custom title treatment whose readable Latin letters spell “TO SERVE MAN” while resembling the Kanamit glyphs from the referenced episode.
 - Restrained pages without generic AI visual conventions, explanatory hero copy, or unnecessary components.
 
@@ -58,13 +59,14 @@ Build a minimal black-and-white static site with:
 
 - The maintainer can edit or add Markdown without changing presentation code.
 - A contributed entry appears automatically, alphabetically, in the relevant tab and index.
+- An authored article reference resolves to the intended entry and optional section, while malformed or broken references block verification.
 - Filtering the active collection by title updates visible entries without a separate search page.
-- The three draft recipes provide a realistic demonstration and useful starting point for human revision.
+- The initial Guide articles provide a realistic demonstration and useful starting point for human revision.
 - The maintainer approves the visual result as simple, personal, and recognizably connected to the episode.
 - Later feedback from lab members can test whether the resource improves onboarding and working practice.
 
 ## Parked details
 
 - Exact framework, file layout, hosting target, and deployment workflow belong to architecture.
-- The precise editorial meaning and content of each initial recipe will remain revisable.
+- The precise editorial meaning and content of each initial Guide will remain revisable.
 - Full-text or fuzzy search, richer taxonomy, and non-Git contribution workflows are outside the MVP.

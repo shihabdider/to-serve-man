@@ -7,10 +7,12 @@ const expectedPages = [
   "index.html",
   "guides/index.html",
   "recipes/index.html",
-  "recipes/alignment/index.html",
-  "recipes/context-engineering/index.html",
-  "recipes/domain-specific-languages/index.html",
+  "guides/alignment/index.html",
+  "guides/context-engineering/index.html",
+  "guides/domain-specific-languages/index.html",
+  "guides/first-principles/index.html",
 ];
+const movedArticleSlugs = ["alignment", "context-engineering", "domain-specific-languages"];
 
 function fail(message) {
   throw new Error(`Static build verification failed: ${message}`);
@@ -26,43 +28,77 @@ function filesBelow(directory) {
 for (const page of expectedPages) {
   if (!existsSync(join(outputRoot, page))) fail(`missing expected page ${page}`);
 }
+for (const slug of movedArticleSlugs) {
+  if (existsSync(join(outputRoot, "recipes", slug, "index.html"))) {
+    fail(`moved Guide still has a Recipe route: ${slug}`);
+  }
+}
 
 const outputFiles = filesBelow(outputRoot);
 const htmlFiles = outputFiles.filter((file) => extname(file) === ".html");
-const localReferencePattern = /(?:href|src)="([^"]+)"/gu;
+const localReferencePattern = /(href|src)="([^"]+)"/gu;
 
 for (const htmlFile of htmlFiles) {
   const html = readFileSync(htmlFile, "utf8");
-  for (const [, reference] of html.matchAll(localReferencePattern)) {
-    if (/^(?:#|https?:|mailto:|data:)/u.test(reference)) continue;
-    if (!reference.startsWith(deploymentBase)) {
-      fail(`${relative(outputRoot, htmlFile)} has a local reference without the deployment base: ${reference}`);
+  for (const [, attribute, reference] of html.matchAll(localReferencePattern)) {
+    if (/^(?:https?:|mailto:|data:)/u.test(reference)) continue;
+
+    let target;
+    let fragment;
+    if (attribute === "href" && reference.startsWith("#")) {
+      target = htmlFile;
+      fragment = reference.slice(1);
+    } else {
+      if (!reference.startsWith(deploymentBase)) {
+        fail(`${relative(outputRoot, htmlFile)} has a local reference without the deployment base: ${reference}`);
+      }
+
+      const [pathAndQuery, rawFragment] = reference.split("#", 2);
+      const pathname = pathAndQuery.split("?", 1)[0];
+      const pathWithinOutput = pathname.slice(deploymentBase.length);
+      target = pathname.endsWith("/")
+        ? join(outputRoot, pathWithinOutput, "index.html")
+        : join(outputRoot, pathWithinOutput);
+      fragment = attribute === "href" ? rawFragment : undefined;
+      if (!existsSync(target)) {
+        fail(`${relative(outputRoot, htmlFile)} references missing output ${reference}`);
+      }
     }
 
-    const pathWithinOutput = reference.slice(deploymentBase.length).split(/[?#]/u, 1)[0];
-    const target = reference.endsWith("/")
-      ? join(outputRoot, pathWithinOutput, "index.html")
-      : join(outputRoot, pathWithinOutput);
-    if (!existsSync(target)) {
-      fail(`${relative(outputRoot, htmlFile)} references missing output ${reference}`);
+    if (fragment !== undefined && fragment.length > 0) {
+      if (extname(target) !== ".html") {
+        fail(`${relative(outputRoot, htmlFile)} links to a fragment on non-HTML output: ${reference}`);
+      }
+      const decodedFragment = decodeURIComponent(fragment);
+      if (!readFileSync(target, "utf8").includes(`id="${decodedFragment}"`)) {
+        fail(`${relative(outputRoot, htmlFile)} references missing section ${reference}`);
+      }
     }
   }
 }
 
+const guidesIndex = readFileSync(join(outputRoot, "guides/index.html"), "utf8");
+for (const title of ["Alignment", "Context Engineering", "Domain-Specific Languages", "First Principles"]) {
+  if (!guidesIndex.includes(`data-title="${title}"`)) fail(`guides index is missing ${title}`);
+}
+if (!/<input[^>]*disabled[^>]*data-filter-input/iu.test(guidesIndex)) {
+  fail("guides index must keep the filter disabled until its client adapter loads");
+}
+if (!guidesIndex.includes("data-filter-input") || !guidesIndex.includes("type=\"module\"")) {
+  fail("guides index is missing the client-side title filter binding");
+}
+if (!guidesIndex.includes("title-filter__icon") || !guidesIndex.includes("placeholder=\"Search titles\"")) {
+  fail("guides index is missing the search-box treatment");
+}
+if (guidesIndex.includes("↗")) fail("guides index still contains decorative entry arrows");
+
 const recipesIndex = readFileSync(join(outputRoot, "recipes/index.html"), "utf8");
+if (!recipesIndex.includes("No recipes have been published.")) {
+  fail("empty recipes index is missing its empty state");
+}
 for (const title of ["Alignment", "Context Engineering", "Domain-Specific Languages"]) {
-  if (!recipesIndex.includes(`data-title="${title}"`)) fail(`recipes index is missing ${title}`);
+  if (recipesIndex.includes(`data-title="${title}"`)) fail(`recipes index still contains moved Guide ${title}`);
 }
-if (!/<input[^>]*disabled[^>]*data-filter-input/iu.test(recipesIndex)) {
-  fail("recipes index must keep the filter disabled until its client adapter loads");
-}
-if (!recipesIndex.includes("data-filter-input") || !recipesIndex.includes("type=\"module\"")) {
-  fail("recipes index is missing the client-side title filter binding");
-}
-if (!recipesIndex.includes("title-filter__icon") || !recipesIndex.includes("placeholder=\"Search titles\"")) {
-  fail("recipes index is missing the search-box treatment");
-}
-if (recipesIndex.includes("↗")) fail("recipes index still contains decorative entry arrows");
 
 const cover = readFileSync(join(outputRoot, "index.html"), "utf8");
 if (!cover.includes("wordmark.svg") || !cover.includes("site-main--cover") || !cover.includes("book-frame--cover")) {
@@ -72,19 +108,29 @@ if (!cover.includes("wordmark-subtitle\">(a cookbook)</span>")) {
   fail("cover is missing the visible cookbook subtitle");
 }
 
-const alignmentArticle = readFileSync(join(outputRoot, "recipes/alignment/index.html"), "utf8");
+const contextGuide = readFileSync(join(outputRoot, "guides/context-engineering/index.html"), "utf8");
 for (const expected of [
   "article-toc",
-  "article-toc__item--depth-3",
   "data-article-tools",
-  "href=\"#synthetic-example\"",
-  "href=\"#immediate-intent\"",
-  "href=\"/to-serve-man/recipes/\">Back to recipes",
+  "data-context-window",
+  "href=\"#the-dumb-zone\"",
+  "href=\"#compaction-vs-artifacts\"",
+  "href=\"/to-serve-man/guides/\">Back to guides",
 ]) {
-  if (!alignmentArticle.includes(expected)) fail(`alignment article is missing ${expected}`);
+  if (!contextGuide.includes(expected)) fail(`context engineering Guide is missing ${expected}`);
 }
-if (!alignmentArticle.includes("Copy code to clipboard")) {
-  fail("alignment article is missing the progressively enhanced code-copy binding");
+
+const domainLanguageGuide = readFileSync(join(outputRoot, "guides/domain-specific-languages/index.html"), "utf8");
+if (!domainLanguageGuide.includes("article-toc__item--depth-3")) {
+  fail("domain-specific language Guide is missing nested article navigation");
+}
+
+const articleScript = outputFiles
+  .filter((candidate) => extname(candidate) === ".js")
+  .map((candidate) => readFileSync(candidate, "utf8"))
+  .join("\n");
+for (const expected of ["Copy code to clipboard", "Chat context illustration", "Illustrative output quality"]) {
+  if (!articleScript.includes(expected)) fail(`article enhancement bundle is missing ${expected}`);
 }
 
 for (const file of outputFiles.filter((candidate) => [".css", ".html", ".svg"].includes(extname(candidate)))) {

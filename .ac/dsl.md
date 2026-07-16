@@ -15,13 +15,15 @@ Shared project vocabulary. These meanings guide artifacts and site structure wit
 - Dumb zone
   - An informal project term for the stage at which accumulated, stale, or distracting context begins to reduce useful response quality.
 - Alignment
-  - For the initial Recipe, explicitly aligning an agent with the scientist’s immediate intent, constraints, and definition of done; not the broad model-safety problem.
+  - For the initial Guide, explicitly aligning an agent with the scientist’s immediate intent, constraints, and definition of done; not the broad model-safety problem.
 - Domain-Specific Language
-  - For the initial Recipe, shared domain vocabulary and concepts elicited through a domain interview; not a formal parser-oriented mini-language.
+  - For the initial Guide, shared domain vocabulary and concepts elicited through a domain interview; not a formal parser-oriented mini-language.
 - Guide
-  - A Markdown-authored explanation of a core principle.
+  - A Markdown-authored explanatory article about a principle, concept, or practice.
 - Recipe
-  - A Markdown-authored, reusable practice that may include a workflow, prompt, skill, checks, or variations.
+  - A Markdown entry with a brief author-written abstract followed by one fenced block containing the complete prompt or agent skill; longer explanations and artifact bundles belong in Guides instead.
+- Article reference
+  - A compact Markdown link between Library entries, written as `[[{guide|recipe}:name#section|custom text]]`; kind and name are required, while section and custom text are optional.
 
 ## Architecture terms
 

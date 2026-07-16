@@ -5,7 +5,7 @@ author: Shihab Dider
 
 > Starter draft: the interview pattern is reusable, but every vocabulary and model in this article should be replaced or corrected for the task at hand.
 
-A domain-specific language can be as simple as a shared, precise vocabulary for one area of work. In this recipe it does **not** mean designing parser syntax or inventing a programming language. It means using an agent-led domain interview to make the scientist's concepts, relationships, invariants, and examples explicit before asking the agent to analyze data or change software.
+A domain-specific language can be as simple as a shared, precise vocabulary for one area of work. In this guide it does **not** mean designing parser syntax or inventing a programming language. It means using an agent-led domain interview to make the scientist's concepts, relationships, invariants, and examples explicit before asking the agent to analyze data or change software.
 
 This matters because familiar words often hide different models. Does "variant" mean an allele in a reference context, one row emitted by a caller, an observation in one sample, or a reviewed record assembled from several sources? An agent can produce coherent work while switching silently among those meanings. A small agreed language gives both participants something concrete to correct.
 

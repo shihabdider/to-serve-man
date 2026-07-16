@@ -20,7 +20,7 @@ describe("collectionPath", () => {
   });
 
   it("maps a validated slug to its static article route", () => {
-    expect(collectionPath("recipe", "context-engineering", "/to-serve-man/"))
-      .toBe("/to-serve-man/recipes/context-engineering/");
+    expect(collectionPath("recipe", "variant-review-prompt", "/to-serve-man/"))
+      .toBe("/to-serve-man/recipes/variant-review-prompt/");
   });
 });

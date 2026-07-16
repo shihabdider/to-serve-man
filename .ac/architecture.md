@@ -39,8 +39,8 @@ Invariants:
 
 The Library contains two peer collections:
 
-- Guides — explanatory principles.
-- Recipes — actionable practices; prompts and skills are recipe material rather than separate top-level types.
+- Guides — explanatory articles about principles, concepts, or practices.
+- Recipes — directly reusable artifacts; each Recipe begins with a brief author-written abstract followed by exactly one complete prompt or agent skill in a copyable fenced block.
 
 Each LibraryEntry has:
 
@@ -57,8 +57,10 @@ Invariants:
 - Published filenames are treated as stable because renaming changes the URL.
 - Adding a valid Markdown file publishes it automatically.
 - Entries cannot select custom templates or page-level styling.
+- Guide bodies are explanatory article prose.
+- Recipe bodies contain two ordered parts: a brief prose abstract and one fenced artifact block containing a complete prompt or agent skill. Longer tutorials, trailing prose, and multiple artifact blocks belong in Guides or separate Recipes.
 
-Initial Recipe meanings:
+Initial Guide meanings:
 
 - Context Engineering — manage finite working context, recognize the “dumb zone,” and refresh context deliberately.
 - Alignment — state the scientist’s immediate intent, constraints, and definition of done for an agent.
@@ -219,7 +221,7 @@ Forbidden overlap: content files, contributor prose, package manifest, and workf
 
 Owner: initial authored content.
 
-Scope: three Recipe Markdown drafts, README, and contribution documentation.
+Scope: three educational Markdown drafts, README, and contribution documentation. The drafts are now classified as Guides.
 
 Dependencies: P1 content schema.
 
@@ -271,7 +273,7 @@ Implementation may proceed when it:
 - Title filtering is progressive enhancement: static navigation and articles work without JavaScript, the filter is disabled in static HTML, and the adapter enables it after binding.
 - The cover uses the approved monochrome wordmark as white lettering on a near-black field, while content pages retain the restrained paper-and-ink presentation.
 - Verification evidence: Astro reports zero diagnostics; 28 unit tests pass; six expected static pages build; generated routes, deployment-base links, assets, filter binding, and no-gradient constraints pass a build-output check; the TypeScript compiler passes; desktop and mobile browser checks found no horizontal overflow; keyboard focus, title filtering, and JavaScript-disabled navigation were exercised successfully.
-- The Guides collection is intentionally empty in this MVP and produces non-blocking Astro warnings.
+- At initial implementation the Guides collection was empty and produced non-blocking Astro warnings; later content work populated it.
 - The local repository is initialized on `main` but has no commit or GitHub remote. Live Pages deployment still requires creating `shihabdider/to-serve-man`, pushing, and selecting GitHub Actions as the Pages source.
 
 ## Visual feedback repair
@@ -358,3 +360,129 @@ The maintainer's annotated review refined the existing Branding and Static Site 
 ### Future publication handoff
 
 Publishing later requires an explicit maintainer decision to make the required repository/Pages access changes and restore the `main` push trigger in `.github/workflows/deploy.yml`. The existing Astro site/base-path configuration and manual deployment workflow remain ready for that later step.
+
+
+## Guide and Recipe taxonomy refinement
+
+### Approved feedback outcome
+
+The maintainer reclassified the existing educational articles as Guides and reserved Recipes for directly reusable prompts and skills. This changes content placement and route identity without adding a collection, framework, schema field, template, or runtime behavior.
+
+### Content invariants
+
+- Alignment, Context Engineering, and Domain-Specific Languages belong to Guides because they explain ideas and practices.
+- First Principles remains a Guide.
+- A Recipe file starts with a brief author-written abstract describing one prompt or agent skill, followed by that complete artifact in one fenced block. It does not contain a tutorial, trailing prose, or several artifacts.
+- The existing `title`, `author`, and nonempty-body content contract remains in force. The abstract-plus-artifact shape is an editorial authoring invariant; prompt-versus-skill subtype metadata and installable packaging are not required.
+- The Recipes collection may be empty.
+
+### Brownfield extension seam and route impact
+
+The change reuses the existing content collection boundary: moving Markdown between `src/content/recipes/` and `src/content/guides/` changes the collection kind consumed by the existing static route generators. Slugs remain stable, but the three moved articles intentionally change from `/recipes/<slug>/` to `/guides/<slug>/`. Publishing is still deferred, so redirects are not introduced for unpublished routes. The maintainer's in-progress edits to Alignment must be preserved byte-for-byte during the move.
+
+Repository and contribution documentation must state the refined taxonomy and Recipe structure. Build-output verification must expect the Guide routes, an empty Recipes index, and article navigation back to Guides while continuing to protect filtering, article tools, deployment-base links, and visual constraints.
+
+### Change-impact evidence
+
+- Moving the three files and adjusting route-level build assertions touches Content Library data and public verification only; route templates, Catalog Policy, Branding, and deployment stay unchanged.
+- Adding a future Guide remains a Markdown-only change.
+- Adding the first Recipe remains a Markdown-only change: its abstract renders as prose, its single fenced artifact renders with the existing copy control, and no installable-file packaging or subtype-specific metadata is needed.
+- A third collection or a new Recipe subtype in the domain model remains a cross-cutting product change.
+
+### P7 work package
+
+Owner: content taxonomy and verification.
+
+Scope: preserve and move the three current article files to Guides; retain First Principles as a Guide; update repository guidance and living product context; update build-output expectations; run configured verification and compiler checks.
+
+Dependencies: completed P1 through P6 and this maintainer-approved taxonomy.
+
+Forbidden changes: no rewriting the maintainer's Alignment draft, new content subtype, new framework, new route template, redirects, or Recipe example invented without maintainer content.
+
+Integration seam: existing Markdown collection directories and static Guide/Recipe route generators.
+
+
+### P7 implementation evidence
+
+- Alignment, Context Engineering, and Domain-Specific Languages moved to `src/content/guides/`; the maintainer's Alignment draft retained the same SHA-256 across the move.
+- First Principles remains in Guides, and Recipes is empty without a placeholder artifact.
+- README, contributor guidance, path examples, domain fixtures, and build-output checks now use the refined taxonomy.
+- Astro's ignored content cache required clearing after the final Recipe source was removed; a fresh cache and production build emit seven pages with no stale Recipe article routes.
+- Configured verification passes: Astro reports zero diagnostics, 28 tests pass, seven static pages and deployment-base links verify, and the TypeScript compiler passes.
+
+
+## Recipe presentation clarification
+
+### Approved feedback outcome
+
+Recipes are not intended to be installable package files. Each Recipe is a reader-facing Markdown page with a brief abstract written by the author, followed by the complete prompt or skill in one fenced block that can be copied easily.
+
+### Structure and ownership
+
+- Content Library retains the shared `title`, `author`, and nonempty-body contract. The two-part Recipe shape is maintained through authoring guidance until concrete evidence justifies AST-level validation.
+- Static Site retains shared article rendering. Ordinary Markdown renders the abstract, while the existing article-tools adapter progressively adds a copy button to the one fenced artifact block and copies its exact text content.
+- A Recipe may not contain multiple artifact blocks, variations, a long tutorial, or prose after the artifact. Distinct artifacts become distinct Recipes; extended explanation becomes a Guide.
+- No new subtype, dependency, route, template, download, or install behavior is introduced.
+
+### Change-impact evidence
+
+This clarification changes product vocabulary, the living PRD, and contributor examples only. The existing Markdown renderer and copy adapter already provide the approved customer-facing behavior, so production code and collection schema remain unchanged. The Recipes collection remains empty until the maintainer authors a concrete artifact.
+
+
+## Build-time article references
+
+### Approved notation and behavior
+
+The maintainer approved `[[{guide|recipe}:name#section|custom text]]` for links between Markdown entries. Collection kind and filename-derived name are required. The heading section and custom visible text are optional. Without custom text, the target entry's current title is used.
+
+Examples:
+
+- `[[guide:first-principles]]`
+- `[[guide:first-principles#generation-repeats-one-step]]`
+- `[[recipe:variant-review-prompt|the variant review prompt]]`
+- `[[guide:first-principles#generation-repeats-one-step|how generation works]]`
+
+### Content Library extension
+
+Secret: notation parsing, target-title indexing, Markdown-AST transformation, and diagnostic wording.
+
+Stable contract:
+
+- Resolve an explicit `guide` or `recipe` plus lowercase kebab-case slug against files in the existing content collections.
+- Emit a deployment-base-aware ordinary Markdown link, optionally with a lowercase kebab-case heading fragment.
+- Use custom text when supplied and the target title otherwise.
+- Fail Markdown processing on malformed notation, unknown targets, invalid slugs, empty custom text, and unterminated references.
+- Leave fenced code, inline code, HTML, and existing Markdown links unchanged so notation can be demonstrated literally.
+
+The adapter uses Astro's official unified Markdown processor and a local remark plugin. YAML frontmatter parsing is build-time-only and supplies target titles without exposing raw frontmatter to page templates. The pure parser and resolver remain independently testable from the filesystem/Markdown AST shell.
+
+### Static-output validation
+
+Build-output verification owns final fragment integrity because rendered heading IDs are an output concern. It validates same-page and cross-page local fragments against IDs in generated HTML, in addition to its existing deployment-base and target-file checks. A missing section therefore blocks configured verification.
+
+### Change-impact evidence
+
+- Renaming a title updates default link labels without changing authored references.
+- Renaming a filename or heading causes references to fail rather than silently publish broken navigation.
+- Moving an entry between Guides and Recipes requires updating the explicit kind in references, matching the intentional route-identity change.
+- Ordinary external Markdown links and article rendering remain unchanged.
+- A future notation change stays localized to the Article Reference parser, tests, authoring guidance, and output validation contract.
+
+### P9 work package
+
+Owner: Content Library article-reference adapter and static-output validation.
+
+Scope: local parser/resolver and remark adapter, Astro processor integration, build-output fragment checks, tests, contributor notation documentation, living PRD update, and configured verification.
+
+Dependencies: existing collection directories, route path helper, shared Markdown renderer, and official Astro unified Markdown processor.
+
+Forbidden changes: no runtime router, client-side link resolution, raw URL authoring requirement, implicit collection guessing, content rewrites, or new collection.
+
+
+### P9 implementation evidence
+
+- `src/lib/article-links.ts` owns strict notation parsing, collection/slug resolution, target-title lookup, base-aware URL generation, and the remark AST adapter.
+- Astro uses the official unified Markdown processor at build time; `yaml` reads target frontmatter titles, while templates remain isolated from raw frontmatter and filesystem details.
+- Eleven focused tests cover complete and optional forms, malformed notation, unknown targets, title/default and custom labels, deployment bases, catalog loading, multiple references, skipped code/existing links, and source-path diagnostics.
+- Static-output verification now checks local heading fragments against generated HTML IDs as well as target files and deployment bases. Existing TOC links exercise this check in the production output.
+- Configured verification passes: Astro reports zero diagnostics, 39 tests pass, seven static pages build and verify, and the TypeScript compiler passes.

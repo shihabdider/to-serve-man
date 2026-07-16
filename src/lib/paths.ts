@@ -21,7 +21,7 @@ export function withBasePath(pathname: string, base = import.meta.env.BASE_URL):
  *
  * Examples:
  * - ("guide") -> "<base>/guides/"
- * - ("recipe", "alignment") -> "<base>/recipes/alignment/"
+ * - ("recipe", "variant-review-prompt") -> "<base>/recipes/variant-review-prompt/"
  *
  * Template: branch on CollectionKind, then branch on the optional slug.
  */
