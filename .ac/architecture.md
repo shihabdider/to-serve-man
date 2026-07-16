@@ -536,3 +536,10 @@ Verification confirms nine static pages: two published Guides, four Recipes, two
 - Run configured verification and the compiler before pushing the activation commit.
 - Confirm the Pages deployment workflow succeeds for the pushed `main` commit.
 - Confirm the public URL responds successfully after deployment.
+
+## GitHub Pages publication evidence
+
+- Repository visibility is public and the repository homepage points to `https://shihabdider.github.io/to-serve-man/`.
+- GitHub Pages reports `workflow` as its build type with HTTPS enforcement enabled.
+- Deployment run `29519561434` successfully verified, built, and deployed activation commit `b8e08a0`.
+- The published URL returned HTTP 200 and the expected `To Serve Man (a cookbook)` title after deployment.

@@ -57,7 +57,7 @@ Human-readable iteration task DAG for the approved MVP and direct feedback repai
   - depends on: P9
   - outcome: two byte-preserved Guide drafts are excluded from publication; Mom Test, bundled HtDP, Hidden-Decision-Driven Design, and Domain-Specific Language publish as one-artifact Recipes
   - checks: configured verification, compiler, source-hash checks, Recipe structure checks, and browser inspection
-- [ ] P11 — Publish the static site to GitHub Pages
+- [x] P11 — Publish the static site to GitHub Pages
   - depends on: P10
   - outcome: public repository, Pages configured for GitHub Actions, and verified pushes to `main` deployed automatically
   - checks: configured verification, compiler, successful deployment workflow, and live public URL

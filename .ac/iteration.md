@@ -30,4 +30,4 @@ Make To Serve Man publicly available at `https://shihabdider.github.io/to-serve-
 
 ## Status
 
-Approved by the maintainer; publication activation is in progress.
+Published. Deployment run `29519561434` succeeded for activation commit `b8e08a0`, and the public URL returned HTTP 200 with the expected site title.
