@@ -70,3 +70,14 @@ Build a minimal black-and-white static site with:
 - Exact framework, file layout, hosting target, and deployment workflow belong to architecture.
 - The precise editorial meaning and content of each initial Guide will remain revisable.
 - Full-text or fuzzy search, richer taxonomy, and non-Git contribution workflows are outside the MVP.
+
+## Publication-state and skill-recipe refinement
+
+The maintainer refined the starter publication set without changing the static-site decision:
+
+- Alignment and Context Engineering remain published Guides.
+- Domain-Specific Languages and First Principles remain retained Markdown drafts but are excluded from collection discovery and public routes until the maintainer republishes them.
+- Recipes now publish four concrete reusable agent skills: Mom Test, bundled HtDP, Hidden-Decision-Driven Design, and Domain-Specific Language.
+- Archiving is a reversible editorial state, not deletion or a third reader-facing collection.
+
+Validation adds two signals: archived drafts remain byte-preserved while producing no route or index entry, and each skill Recipe renders one abstract followed by exactly one copyable artifact block.

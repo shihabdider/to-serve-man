@@ -50,3 +50,12 @@ Shared project vocabulary. These meanings guide artifacts and site structure wit
 
 - Responsible use
   - Important future article/policy territory that the human has not yet shaped and that this MVP must not invent.
+
+## Publication-state terms
+
+- Published entry
+  - A Guide or Recipe directly discovered by its configured content collection and therefore given an index entry and static route.
+- Archived Guide draft
+  - Retained Guide Markdown under `src/content/archive/guides/` that is intentionally excluded from collection discovery, indexes, article-link targets, and static routes until moved back to `src/content/guides/`.
+- Skill Recipe
+  - A Recipe whose single artifact block contains one complete agent skill; companion material may be embedded inside that same skill block rather than published as separate artifacts.

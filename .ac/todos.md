@@ -52,10 +52,15 @@ Human-readable iteration task DAG for the approved MVP and direct feedback repai
 - [x] P9 — Add validated build-time links between Markdown entries
   - depends on: P8
   - outcome: approved notation resolves during Markdown compilation with target/title validation, output fragment checks, focused tests, and contributor guidance
+  - unlocks: P10
+- [x] P10 — Archive unfinished Guides and publish four skill Recipes
+  - depends on: P9
+  - outcome: two byte-preserved Guide drafts are excluded from publication; Mom Test, bundled HtDP, Hidden-Decision-Driven Design, and Domain-Specific Language publish as one-artifact Recipes
+  - checks: configured verification, compiler, source-hash checks, Recipe structure checks, and browser inspection
 
 ## Current focus
 
-Maintainer review of the completed P9 build-time article-reference implementation.
+Maintainer review of the archived Guide drafts and four published skill Recipes.
 
 ## Parallelization notes
 
@@ -64,3 +69,4 @@ Maintainer review of the completed P9 build-time article-reference implementatio
 - P7 is one small integrated move because content paths, documentation, and route assertions describe the same taxonomy change.
 - P8 changes only product vocabulary and authoring guidance because the existing Markdown copy adapter already satisfies the requested interaction.
 - P9 is one integrated Content Library extension because parsing, target resolution, Markdown transformation, and final fragment checks implement one stable authoring contract.
+- P10 is one editorial package because archive state, published Recipe content, documentation, and route assertions must describe the same publication set.

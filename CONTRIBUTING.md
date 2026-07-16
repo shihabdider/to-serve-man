@@ -11,9 +11,13 @@ A Recipe has two parts in order: a brief author-written abstract describing the 
 
 Entries are peers. Do not add rank, sequence, previous/next, template, or page-style metadata.
 
+## Archive a Guide draft
+
+Move a Guide that should remain editable but unpublished to `src/content/archive/guides/`. Files there retain ordinary Guide frontmatter and Markdown, but collection discovery ignores them, so they do not appear in the Guides index and receive no static route. Move the file back to `src/content/guides/` when it is ready to publish. Do not link published entries to an archived draft.
+
 ## File and schema rules
 
-Put each entry directly in its collection directory. Nested directories are not discovered.
+Put each published entry directly in its collection directory. Nested directories are not discovered; `src/content/archive/guides/` deliberately uses that boundary to retain unpublished drafts.
 
 A filename must:
 
@@ -87,10 +91,10 @@ The site adds a copy control to rendered fenced blocks automatically. Review the
 Use the compact article-link notation instead of hard-coding collection URLs:
 
 ```md
-[[guide:first-principles]]
-[[guide:first-principles#generation-repeats-one-step]]
-[[recipe:variant-review-prompt|the variant review prompt]]
-[[guide:first-principles#generation-repeats-one-step|how generation works]]
+[[guide:context-engineering]]
+[[guide:context-engineering#the-dumb-zone]]
+[[recipe:mom-test|the Mom Test skill]]
+[[guide:context-engineering#the-dumb-zone|the dumb zone]]
 ```
 
 The canonical form is `[[{guide|recipe}:name#section|custom text]]`:

@@ -9,10 +9,35 @@ const expectedPages = [
   "recipes/index.html",
   "guides/alignment/index.html",
   "guides/context-engineering/index.html",
-  "guides/domain-specific-languages/index.html",
-  "guides/first-principles/index.html",
+  "recipes/domain-specific-language/index.html",
+  "recipes/hidden-decision-driven-design/index.html",
+  "recipes/htdp/index.html",
+  "recipes/mom-test/index.html",
 ];
 const movedArticleSlugs = ["alignment", "context-engineering", "domain-specific-languages"];
+const archivedGuideSlugs = ["domain-specific-languages", "first-principles"];
+const recipeEntries = [
+  {
+    slug: "domain-specific-language",
+    title: "Domain-Specific Language (DSL)",
+    abstract: "A collaborative interview skill",
+  },
+  {
+    slug: "hidden-decision-driven-design",
+    title: "Hidden-Decision-Driven Design",
+    abstract: "An architecture skill",
+  },
+  {
+    slug: "htdp",
+    title: "How to Design Programs (HtDP)",
+    abstract: "A data-first construction skill",
+  },
+  {
+    slug: "mom-test",
+    title: "Mom Test",
+    abstract: "A question-quality skill",
+  },
+];
 
 function fail(message) {
   throw new Error(`Static build verification failed: ${message}`);
@@ -31,6 +56,11 @@ for (const page of expectedPages) {
 for (const slug of movedArticleSlugs) {
   if (existsSync(join(outputRoot, "recipes", slug, "index.html"))) {
     fail(`moved Guide still has a Recipe route: ${slug}`);
+  }
+}
+for (const slug of archivedGuideSlugs) {
+  if (existsSync(join(outputRoot, "guides", slug, "index.html"))) {
+    fail(`archived Guide still has a public route: ${slug}`);
   }
 }
 
@@ -78,8 +108,11 @@ for (const htmlFile of htmlFiles) {
 }
 
 const guidesIndex = readFileSync(join(outputRoot, "guides/index.html"), "utf8");
-for (const title of ["Alignment", "Context Engineering", "Domain-Specific Languages", "First Principles"]) {
+for (const title of ["Alignment", "Context Engineering"]) {
   if (!guidesIndex.includes(`data-title="${title}"`)) fail(`guides index is missing ${title}`);
+}
+for (const title of ["Domain-Specific Languages", "First Principles"]) {
+  if (guidesIndex.includes(`data-title="${title}"`)) fail(`guides index exposes archived Guide ${title}`);
 }
 if (!/<input[^>]*disabled[^>]*data-filter-input/iu.test(guidesIndex)) {
   fail("guides index must keep the filter disabled until its client adapter loads");
@@ -93,8 +126,11 @@ if (!guidesIndex.includes("title-filter__icon") || !guidesIndex.includes("placeh
 if (guidesIndex.includes("↗")) fail("guides index still contains decorative entry arrows");
 
 const recipesIndex = readFileSync(join(outputRoot, "recipes/index.html"), "utf8");
-if (!recipesIndex.includes("No recipes have been published.")) {
-  fail("empty recipes index is missing its empty state");
+if (recipesIndex.includes("No recipes have been published.")) {
+  fail("populated recipes index still shows its empty state");
+}
+for (const { title } of recipeEntries) {
+  if (!recipesIndex.includes(`data-title="${title}"`)) fail(`recipes index is missing ${title}`);
 }
 for (const title of ["Alignment", "Context Engineering", "Domain-Specific Languages"]) {
   if (recipesIndex.includes(`data-title="${title}"`)) fail(`recipes index still contains moved Guide ${title}`);
@@ -120,9 +156,19 @@ for (const expected of [
   if (!contextGuide.includes(expected)) fail(`context engineering Guide is missing ${expected}`);
 }
 
-const domainLanguageGuide = readFileSync(join(outputRoot, "guides/domain-specific-languages/index.html"), "utf8");
-if (!domainLanguageGuide.includes("article-toc__item--depth-3")) {
-  fail("domain-specific language Guide is missing nested article navigation");
+for (const { slug, title, abstract } of recipeEntries) {
+  const recipe = readFileSync(join(outputRoot, "recipes", slug, "index.html"), "utf8");
+  if (!recipe.includes(`data-article-tools`) || !recipe.includes(`>${title}</h1>`)) {
+    fail(`${title} Recipe is missing shared article rendering`);
+  }
+  if (!recipe.includes(`href="/to-serve-man/recipes/">Back to recipes`)) {
+    fail(`${title} Recipe is missing its collection back link`);
+  }
+  const artifactBlocks = recipe.match(/<pre(?:\s|>)/gu) ?? [];
+  if (artifactBlocks.length !== 1) fail(`${title} Recipe must render exactly one artifact block`);
+  if (recipe.indexOf(abstract) === -1 || recipe.indexOf(abstract) > recipe.indexOf("<pre")) {
+    fail(`${title} Recipe must render its abstract before the artifact`);
+  }
 }
 
 const articleScript = outputFiles

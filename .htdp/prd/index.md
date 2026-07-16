@@ -11,7 +11,9 @@ The library has two peer collections with deliberately different jobs:
 - Guides are explanatory articles about principles, concepts, and practices.
 - Recipes present directly reusable artifacts. Each Recipe begins with a brief author-written abstract and then contains exactly one complete prompt or agent skill in a copyable fenced block.
 
-Alignment, Context Engineering, Domain-Specific Languages, and First Principles are Guides. The Recipes collection may remain empty until the maintainer contributes a real prompt or skill.
+Alignment and Context Engineering are currently published Guides. Domain-Specific Languages and First Principles remain retained Guide drafts under `src/content/archive/guides/`; they are intentionally absent from collection indexes and public routes until the maintainer republishes them.
+
+The Recipes collection publishes four reusable agent skills: Mom Test, a bundled How to Design Programs skill, Hidden-Decision-Driven Design, and a Domain-Specific Language interview skill.
 
 ## Users / Use Cases
 
@@ -22,10 +24,12 @@ Alignment, Context Engineering, Domain-Specific Languages, and First Principles 
 
 ## Domain Terms and Data Definitions
 
-A LibraryEntry is one of:
+Authored library material is one of:
 
-- GuideEntry: a validated Markdown entry whose body is explanatory article prose.
-- RecipeEntry: a validated Markdown entry whose body contains a brief Abstract followed by one fenced ArtifactBlock holding one complete Prompt or AgentSkill.
+- Published LibraryEntry:
+  - GuideEntry: a validated Markdown entry whose body is explanatory article prose.
+  - RecipeEntry: a validated Markdown entry whose body contains a brief Abstract followed by one fenced ArtifactBlock holding one complete Prompt or AgentSkill.
+- ArchivedGuideDraft: retained Guide Markdown outside collection discovery, with no index entry or static route.
 
 Every current LibraryEntry has:
 
@@ -46,10 +50,10 @@ Its authored notation is `[[{guide|recipe}:name#section|custom text]]`. Kind and
 
 Examples:
 
-- `guides/alignment.md` is a Guide because it explains alignment.
-- `guides/first-principles.md` is a Guide because it explains how LLMs work.
-- A future Recipe may contain a short description followed by one complete reusable prompt in a fenced block.
-- A future Recipe may contain a short description followed by one complete agent skill in a fenced block.
+- `guides/alignment.md` is a published Guide because it explains alignment.
+- `archive/guides/first-principles.md` is an ArchivedGuideDraft and therefore has no public route.
+- `recipes/mom-test.md` contains a short description followed by one complete agent skill in a fenced block.
+- `recipes/htdp.md` bundles the HtDP skill and its companion methods into one complete artifact block.
 - A tutorial containing several prompts is not a Recipe; it belongs in Guides or must be split into one Recipe per artifact.
 
 ## Desired Behaviors
@@ -60,6 +64,7 @@ Examples:
 - Recipes use the same static collection and route machinery while presenting one reusable artifact each after a brief abstract.
 - The existing article-tools adapter adds a copy control to the Recipe's artifact block and copies its complete text.
 - An empty collection renders a valid empty state.
+- Moving a Guide into `src/content/archive/guides/` removes its index entry and route without deleting its Markdown; moving it back republishes it.
 - Reader navigation works without JavaScript; title filtering is progressive enhancement.
 - Maintainer-authored Markdown changes are preserved exactly unless editorial revision is explicitly requested.
 - Build-time article references become deployment-base-aware links; omitted custom text uses the target title.
@@ -67,14 +72,14 @@ Examples:
 
 ## Functional Verification Checkpoints
 
-- The Guides index lists Alignment, Context Engineering, Domain-Specific Languages, and First Principles alphabetically.
-- Each current Guide opens below `/guides/<slug>/` and links back to Guides.
-- No moved article remains below `/recipes/<slug>/`.
-- The Recipes index loads and reports that no Recipes have been published while the collection is empty.
+- The Guides index lists Alignment and Context Engineering alphabetically.
+- Domain-Specific Languages and First Principles remain on disk but have no generated Guide route or index entry.
+- The Recipes index lists Domain-Specific Language (DSL), Hidden-Decision-Driven Design, How to Design Programs (HtDP), and Mom Test alphabetically.
+- Each published Recipe renders its abstract before exactly one artifact block, and the block's copy control returns the complete skill text.
+- No moved explanatory article remains below its old `/recipes/<slug>/` route.
 - Adding one valid Markdown entry causes the static build to emit its index link and article route automatically.
-- A future Recipe renders its abstract before one artifact block, and the block's copy control returns the complete prompt or skill text.
-- `[[guide:first-principles]]` renders as a link labeled `First Principles`.
-- `[[guide:first-principles#generation-repeats-one-step|generation]]` renders with custom text and a validated heading fragment.
+- `[[guide:context-engineering]]` renders as a link labeled `Context Engineering`.
+- `[[guide:context-engineering#the-dumb-zone|the dumb zone]]` renders with custom text and a validated heading fragment.
 - Invalid kinds, slugs, targets, or sections block configured verification.
 - `npm run verify` and TypeScript compilation pass.
 
@@ -86,10 +91,10 @@ Examples:
 
 - A third top-level collection.
 - A backend, accounts, browser editing, or runtime rendering.
-- Inventing placeholder Recipes merely to populate the collection.
-- Rewriting maintainer drafts during a collection move.
+- Publishing archived drafts before maintainer approval.
+- Rewriting maintainer drafts during an archive or collection move.
 - Redirects for article routes that were never publicly deployed.
 
 ## Notes
 
-The site remains private and GitHub Pages publishing is deferred. Current content uses shared `title`, `author`, and nonempty-body validation. Recipe structure is an editorial authoring invariant: a brief abstract followed by one copyable fenced artifact block. Prompt-versus-skill subtype metadata and installable packaging are unnecessary for the current direction.
+The site remains private and GitHub Pages publishing is deferred. Current published content uses shared `title`, `author`, and nonempty-body validation. Recipe structure is an editorial authoring invariant: a brief abstract followed by one copyable fenced artifact block. Prompt-versus-skill subtype metadata and installable packaging are unnecessary for the current direction. Archived Guide drafts remain ordinary Markdown but sit outside configured collection loaders.

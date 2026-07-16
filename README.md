@@ -4,7 +4,7 @@ A small static cookbook of practical guides and recipes for cancer-genomics lab 
 
 Guides are explanatory articles about principles, concepts, and practices. Each Recipe begins with a brief author-written abstract, followed by exactly one complete prompt or agent skill in a copyable fenced block. Recipes are meant to be easy to understand and copy, not to serve as installable package files.
 
-The starter Guides are working drafts, intended to improve through use and maintainer review.
+Published Guides remain working drafts intended to improve through use and maintainer review. Drafts that are not ready for readers live under `src/content/archive/guides/`; they remain editable Markdown but are excluded from collection indexes and public routes.
 
 ## How the site is built
 
@@ -39,8 +39,9 @@ Run `npm run verify` before opening a pull request.
 
 ## Source organization
 
-- `src/content/guides/` — explanatory Markdown articles.
-- `src/content/recipes/` — a brief abstract followed by one copyable prompt or agent skill block per file.
+- `src/content/guides/` — published explanatory Markdown articles.
+- `src/content/recipes/` — published entries containing a brief abstract followed by one copyable prompt or agent skill block per file.
+- `src/content/archive/guides/` — retained Guide drafts excluded from static discovery and routes.
 - `src/content.config.ts` — content collection discovery and frontmatter/filename schema.
 - `src/domain/` — framework-independent Library and Catalog contracts, with unit tests.
 - `src/lib/content-library.ts` and `src/lib/article-links.ts` — boundaries for validated content entries and build-time links between them.

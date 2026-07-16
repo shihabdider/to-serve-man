@@ -486,3 +486,33 @@ Forbidden changes: no runtime router, client-side link resolution, raw URL autho
 - Eleven focused tests cover complete and optional forms, malformed notation, unknown targets, title/default and custom labels, deployment bases, catalog loading, multiple references, skipped code/existing links, and source-path diagnostics.
 - Static-output verification now checks local heading fragments against generated HTML IDs as well as target files and deployment bases. Existing TOC links exercise this check in the production output.
 - Configured verification passes: Astro reports zero diagnostics, 39 tests pass, seven static pages build and verify, and the TypeScript compiler passes.
+
+## Archived Guide drafts and published skill Recipes
+
+### Approved editorial state
+
+- Published entries remain the only LibraryEntries consumed by Content Library and Static Site.
+- An Archived Guide Draft is retained under `src/content/archive/guides/`, outside the direct-file glob used by the `guides` collection. It has no route identity, index entry, or article-link target until moved back into `src/content/guides/`.
+- Skill Recipes reuse the existing Recipe contract: one short prose abstract followed by exactly one fenced artifact block. HtDP companion methods are embedded inside its one outer skill block rather than becoming separate Recipe artifacts.
+- The new Domain-Specific Language skill is editorial content, not a new runtime DSL, parser, collection, or domain type.
+
+### Brownfield seam and compatibility
+
+The change uses existing Markdown collection directories, shared article rendering, copy enhancement, and static-output checks. No schema field, loader, route template, browser state, framework, or dependency changed. The two archived files retained their pre-move SHA-256 hashes.
+
+Published article references cannot resolve to archived drafts because the existing Article Reference target loader indexes direct collection files only. Contributor guidance therefore forbids links from published entries to archived drafts.
+
+### P10 work package and evidence
+
+Owner: editorial publication state and skill content.
+
+Scope: archive Domain-Specific Languages and First Principles; add Mom Test, bundled HtDP, Hidden-Decision-Driven Design, and Domain-Specific Language Recipes; update documentation, living product context, and build-output verification.
+
+Verification confirms nine static pages: two published Guides, four Recipes, two collection indexes, and the cover. Archived Guide routes and titles are absent; every Recipe renders one abstract before exactly one artifact block; HtDP contains all four companion methods; 45 tests, Astro diagnostics, build-output checks, and TypeScript compilation pass. Browser checks confirmed the four alphabetical Recipe titles, one HtDP copy control, embedded companion text, and no horizontal overflow.
+
+### Change-impact evidence
+
+- Republishing one archived Guide requires only moving its unchanged Markdown back to `src/content/guides/` and updating any intentionally changed verification expectations.
+- Revising a skill changes one Recipe Markdown file; shared rendering and copy behavior remain unchanged.
+- Adding draft visibility to the reader interface would require a new product and collection decision and remains outside this change.
+- Replacing Recipe packaging or introducing installable skill files would change the Recipe contract and remains cross-cutting.
