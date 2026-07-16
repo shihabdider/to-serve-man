@@ -516,3 +516,23 @@ Verification confirms nine static pages: two published Guides, four Recipes, two
 - Revising a skill changes one Recipe Markdown file; shared rendering and copy behavior remain unchanged.
 - Adding draft visibility to the reader interface would require a new product and collection decision and remains outside this change.
 - Replacing Recipe packaging or introducing installable skill files would change the Recipe contract and remains cross-cutting.
+
+## GitHub Pages publication activation
+
+### Approved outcome
+
+- The maintainer explicitly approved making `shihabdider/to-serve-man` public and publishing the static site to GitHub Pages.
+- The existing `Pages Deployment` contract remains unchanged: pushes to `main` verify, build, and deploy `dist/`, while manual workflow dispatch remains available.
+- GitHub Pages uses GitHub Actions as its build source and serves the existing deployment-aware output at `https://shihabdider.github.io/to-serve-man/`.
+
+### Brownfield seam and change impact
+
+- Publication reuses `.github/workflows/deploy.yml`, the existing Astro `site` and `base` configuration, and the repository's public verification command.
+- The publication change is localized to the deployment trigger, repository visibility and Pages settings, and documentation of the live state. Content, routes, presentation, and runtime behavior do not change.
+- Failed verification must continue to prevent deployment.
+
+### Publication checks
+
+- Run configured verification and the compiler before pushing the activation commit.
+- Confirm the Pages deployment workflow succeeds for the pushed `main` commit.
+- Confirm the public URL responds successfully after deployment.

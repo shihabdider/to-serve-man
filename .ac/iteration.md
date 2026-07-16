@@ -2,36 +2,32 @@
 
 ## Current slice
 
-Archive two unfinished Guide drafts and publish four reusable skill Recipes.
+Publish the verified static site to GitHub Pages.
 
 ## Customer-facing goal
 
-Keep unfinished Domain-Specific Languages and First Principles articles private for continued editing while giving readers four complete, copyable agent skills.
+Make To Serve Man publicly available at `https://shihabdider.github.io/to-serve-man/` and automatically redeploy verified changes pushed to `main`.
 
 ## Scope
 
-- Move the two unfinished Guides to `src/content/archive/guides/` without changing their bytes.
-- Publish Mom Test and Hidden-Decision-Driven Design from the current Autocode source skills.
-- Publish HtDP as one skill with its four companion methods embedded in the same artifact.
-- Publish a new general Domain-Specific Language interview skill informed by Autocode's Domain Model Interview and the historical HtDP DSL guide.
-- Update contributor guidance, living product context, and static-output verification.
+- Make `shihabdider/to-serve-man` public.
+- Configure GitHub Pages to use GitHub Actions.
+- Restore the deployment workflow's `main` push trigger while retaining manual dispatch.
+- Update repository documentation to describe the live publication workflow.
+- Verify the site locally, confirm the remote workflow succeeds, and check the public URL.
 
 ## Non-goals
 
-- No third reader-facing collection, draft routes, publication controls, schema fields, template changes, or runtime service.
-- No rewriting the two archived Guide drafts.
-- No installable skill packaging or multiple artifact blocks in one Recipe.
+- No content, route, presentation, framework, or runtime changes.
+- No custom domain or alternate hosting provider.
 
 ## Acceptance checks
 
-- The archived Guide source hashes match their pre-move versions.
-- Neither archived Guide appears in the Guides index or generated routes.
-- The Recipes index lists all four skills alphabetically.
-- Every Recipe renders its abstract before exactly one artifact block and retains the shared copy enhancement.
-- HtDP's companion methods are present inside its one copied skill.
-- The new DSL skill covers boundaries, terms, relationships, invariants, scenarios, counterexamples, and a human approval gate without expanding into modeling or implementation.
-- Configured verification and TypeScript compilation pass.
+- Configured verification and TypeScript compilation pass before the activation push.
+- The repository is public and Pages uses the workflow build source.
+- The deployment workflow succeeds for the activation commit.
+- The published URL responds successfully.
 
 ## Status
 
-Implemented and verified locally; ready for maintainer review.
+Approved by the maintainer; publication activation is in progress.

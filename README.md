@@ -47,7 +47,7 @@ Run `npm run verify` before opening a pull request.
 - `src/lib/content-library.ts` and `src/lib/article-links.ts` — boundaries for validated content entries and build-time links between them.
 - `src/pages/` and nearby presentation directories — Astro routes, layouts, components, styles, and the small browser-side filter binding.
 - `public/` — static assets copied into the build.
-- `.github/workflows/` — pull-request verification and the deferred, manually triggered GitHub Pages deployment.
+- `.github/workflows/` — pull-request verification and the GitHub Pages deployment workflow.
 - `dist/` — generated production output; do not edit or commit it.
 
 Presentation code consumes validated Library entries rather than parsing Markdown files directly. Content authors should normally need to work only in `src/content/`.
@@ -58,7 +58,7 @@ The production target is:
 
 <https://shihabdider.github.io/to-serve-man/>
 
-Astro is configured with `https://shihabdider.github.io` as the site and `/to-serve-man` as the base path. Pull requests run the verification workflow. Pages publishing is intentionally deferred while the repository remains private: pushes to `main` do not deploy. The deployment workflow is manual-only until publication is explicitly approved.
+Astro is configured with `https://shihabdider.github.io` as the site and `/to-serve-man` as the base path. Pull requests run the verification workflow. Every push to `main` runs the required checks and deploys the verified static build through GitHub Actions; the deployment can also be started manually.
 
 ## Contributing
 

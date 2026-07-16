@@ -1,8 +1,9 @@
 name: Deploy to GitHub Pages
 
-# Publishing is intentionally deferred while the repository is private.
-# Re-enable the push trigger when GitHub Pages publication is approved.
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
