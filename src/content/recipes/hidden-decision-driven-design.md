@@ -8,7 +8,7 @@ An architecture skill for organizing modules around difficult, volatile decision
 ````markdown
 ---
 name: hidden-decision-driven-design
-description: Hidden volatility-led module design policy for the Product Architect role. Use only when explicitly referenced to turn an approved model and project evidence into stable contracts and change-tested work packages.
+description: Volatility-led architecture method for turning an approved domain model and project evidence into stable module contracts and change-tested work packages.
 disable-model-invocation: true
 ---
 

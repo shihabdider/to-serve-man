@@ -8,25 +8,25 @@ A data-first construction skill that discovers layered implementation wishes, de
 ````markdown
 ---
 name: htdp
-description: Hidden How to Design Programs construction method for the Autocode Implementer role. Use only when a role explicitly references this skill to implement one bounded target with data-first, compiler-driven layered wishes, examples/templates before bodies, checks between layers, and post-concrete abstraction.
+description: How to Design Programs construction method for one bounded implementation target, using data-first compiler-driven layered wishes, examples and templates before bodies, checks between layers, and post-concrete abstraction.
 disable-model-invocation: true
 ---
 
 # HtDP Construction Skill
 
-This is a hidden standard skill package for role-driven construction. It supplies the HtDP method only; the active role, Autocode project artifacts, execution policy, harness adapter, and verification policy own target selection, human interaction, workspace isolation, dispatch, persistence, and check configuration.
+This is a standalone HtDP skill for constructing one bounded implementation target. The surrounding task context owns target selection, permitted scope, human interaction, workspace isolation, delegation, persistence, and check configuration.
 
-Use this skill only for the single implementation target supplied by the role. Do not advance to another target.
+Use this skill only for the supplied implementation target. Do not advance to another target.
 
 ## Method contract
 
-1. Confirm the target, allowed scope, relevant data definitions, existing architecture seam, and required checks from the role/project context.
+1. Confirm the target, allowed scope, relevant data definitions, existing architecture seam, and required checks from the task and project context.
 2. Discover compiler-driven layered wishes for the target. See **Compiler-Driven Wish Discovery** below.
 3. Before any body logic, record functional examples and a data-derived template/skeleton for each wish.
 4. Implement one wish at a time from the numerically highest remaining layer toward layer 0. See **Wish Implementation** below.
 5. Run compiler/tests or configured checks after each wish and between layers before moving to the next lower layer.
 6. After all concrete wishes pass, run a post-concrete abstraction review. See **Post-Concrete Abstraction** below.
-7. Run required final verification and return a completed or blocked role result with changes, evidence, risks, and integration notes.
+7. Run required final verification and return a completed or blocked result with changes, evidence, risks, and integration notes.
 
 ## Boundaries
 
@@ -34,8 +34,8 @@ Use this skill only for the single implementation target supplied by the role. D
 - Do not create `.htdp` state, require `.htdp` formats, or introduce HtDP project-management artifacts.
 - Do not require custom helper CLIs such as `type-map`, `fn-body`, `err-group`, `diff-tool`, or `diff-check`.
 - Do not own pair/autonomous modes, PRDs, worktree orchestration, direct subagent dispatch, or commit policy.
-- Use ordinary codebase tools, the project compiler/test commands, `git`, and `autocode verify` when available and relevant.
-- If you are a subagent, never delegate or contact the human; return a blocked result to the primary agent.
+- Use ordinary codebase tools, the project compiler and test commands, `git`, and the project's configured verification command when available and relevant.
+- If you are a delegated worker, never delegate again or contact the human; return a blocked result to the coordinating agent.
 
 ## Optional architecture method
 
@@ -43,7 +43,7 @@ For approved app-shaped or stateful work, use **Optional Functional Core / Imper
 
 ## Stuck-loop escalation
 
-Stop instead of looping when retries repeat the same failure, oscillate between known failure states, require work outside scope, expose an unresolved behavior/data/architecture decision, or exhaust the role's retry budget. Return the smallest useful blocked result: current wish/layer, evidence, attempts, last diagnostics, and the decision or help needed.
+Stop instead of looping when retries repeat the same failure, oscillate between known failure states, require work outside scope, expose an unresolved behavior/data/architecture decision, or exhaust the agreed retry budget. Return the smallest useful blocked result: current wish/layer, evidence, attempts, last diagnostics, and the decision or help needed.
 
 ## Compiler-Driven Wish Discovery
 
@@ -51,7 +51,7 @@ Use this section to derive the private wish graph for one supplied implementatio
 
 ### Inputs
 
-- Target behavior or fix from the role.
+- Target behavior or fix from the task.
 - Permitted files/modules and required checks.
 - Existing data definitions, types, tests, and comparable code.
 - Approved architecture context, including optional functional core/shell decisions.
@@ -109,7 +109,7 @@ Before moving from one layer to the next lower layer, run the compiler and relev
 
 ## Wish Implementation
 
-Use this section for one wish at a time. If given a layer, select exactly one non-passing wish from the highest remaining layer unless the role has already assigned a narrower wish.
+Use this section for one wish at a time. If given a layer, select exactly one non-passing wish from the highest remaining layer unless the task has already assigned a narrower wish.
 
 ### Pre-body checklist
 
@@ -139,7 +139,7 @@ If any item is missing, fill the missing design material first or return to wish
 
 After all wishes in the current highest layer pass, run the compiler and relevant configured checks before descending to the next lower layer. Do not start layer 0 while a higher-layer failure remains.
 
-Use `autocode verify` for final configured verification and for layer gates when the project or role requires the full configured check set. Otherwise, use the smallest compiler/test command that gives reliable evidence, then include it in the result.
+Use the project's full configured verification command for final verification and for layer gates when the task requires the complete check set. Otherwise, use the smallest compiler or test command that gives reliable evidence, then include it in the result.
 
 ### Stuck-loop rules
 
@@ -156,7 +156,7 @@ A blocked result should include the wish, layer, last command, last diagnostics,
 
 ## Optional Functional Core / Imperative Shell Architecture
 
-Use this section only when the role/project context has selected it for app-shaped or stateful work. If the selection is missing and the choice would affect the implementation, stop and return the architecture question to the primary agent.
+Use this section only when the task or project context has selected it for app-shaped or stateful work. If the selection is missing and the choice would affect the implementation, stop and return the architecture question to the coordinating agent.
 
 ### Purpose
 

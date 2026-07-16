@@ -13,7 +13,7 @@ The library has two peer collections with deliberately different jobs:
 
 Alignment and Context Engineering are currently published Guides. Domain-Specific Languages and First Principles remain retained Guide drafts under `src/content/archive/guides/`; they are intentionally absent from collection indexes and public routes until the maintainer republishes them.
 
-The Recipes collection publishes four reusable agent skills: Mom Test, a bundled How to Design Programs skill, Hidden-Decision-Driven Design, and a Domain-Specific Language interview skill.
+The Recipes collection publishes four reusable agent skills: Mom Test, a bundled How to Design Programs skill, Hidden-Decision-Driven Design, and Domain Model Interview.
 
 ## Users / Use Cases
 
@@ -53,6 +53,7 @@ Examples:
 - `guides/alignment.md` is a published Guide because it explains alignment.
 - `archive/guides/first-principles.md` is an ArchivedGuideDraft and therefore has no public route.
 - `recipes/mom-test.md` contains a short description followed by one complete agent skill in a fenced block.
+- `recipes/domain-model-interview.md` contains a standalone shared-language and schema-first modeling skill.
 - `recipes/htdp.md` bundles the HtDP skill and its companion methods into one complete artifact block.
 - A tutorial containing several prompts is not a Recipe; it belongs in Guides or must be split into one Recipe per artifact.
 
@@ -74,7 +75,7 @@ Examples:
 
 - The Guides index lists Alignment and Context Engineering alphabetically.
 - Domain-Specific Languages and First Principles remain on disk but have no generated Guide route or index entry.
-- The Recipes index lists Domain-Specific Language (DSL), Hidden-Decision-Driven Design, How to Design Programs (HtDP), and Mom Test alphabetically.
+- The Recipes index lists Domain Model Interview, Hidden-Decision-Driven Design, How to Design Programs (HtDP), and Mom Test alphabetically.
 - Each published Recipe renders its abstract before exactly one artifact block, and the block's copy control returns the complete skill text.
 - No moved explanatory article remains below its old `/recipes/<slug>/` route.
 - Adding one valid Markdown entry causes the static build to emit its index link and article route automatically.

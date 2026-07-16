@@ -9,18 +9,19 @@ const expectedPages = [
   "recipes/index.html",
   "guides/alignment/index.html",
   "guides/context-engineering/index.html",
-  "recipes/domain-specific-language/index.html",
+  "recipes/domain-model-interview/index.html",
   "recipes/hidden-decision-driven-design/index.html",
   "recipes/htdp/index.html",
   "recipes/mom-test/index.html",
 ];
 const movedArticleSlugs = ["alignment", "context-engineering", "domain-specific-languages"];
 const archivedGuideSlugs = ["domain-specific-languages", "first-principles"];
+const retiredRecipeSlugs = ["domain-specific-language"];
 const recipeEntries = [
   {
-    slug: "domain-specific-language",
-    title: "Domain-Specific Language (DSL)",
-    abstract: "A collaborative interview skill",
+    slug: "domain-model-interview",
+    title: "Domain Model Interview",
+    abstract: "A schema-first interview skill",
   },
   {
     slug: "hidden-decision-driven-design",
@@ -61,6 +62,11 @@ for (const slug of movedArticleSlugs) {
 for (const slug of archivedGuideSlugs) {
   if (existsSync(join(outputRoot, "guides", slug, "index.html"))) {
     fail(`archived Guide still has a public route: ${slug}`);
+  }
+}
+for (const slug of retiredRecipeSlugs) {
+  if (existsSync(join(outputRoot, "recipes", slug, "index.html"))) {
+    fail(`retired Recipe still has a public route: ${slug}`);
   }
 }
 
@@ -135,6 +141,9 @@ for (const { title } of recipeEntries) {
 for (const title of ["Alignment", "Context Engineering", "Domain-Specific Languages"]) {
   if (recipesIndex.includes(`data-title="${title}"`)) fail(`recipes index still contains moved Guide ${title}`);
 }
+if (recipesIndex.includes(`data-title="Domain-Specific Language (DSL)"`)) {
+  fail("recipes index still contains the retired Domain-Specific Language Recipe");
+}
 
 const cover = readFileSync(join(outputRoot, "index.html"), "utf8");
 if (!cover.includes("wordmark.svg") || !cover.includes("site-main--cover") || !cover.includes("book-frame--cover")) {
@@ -169,6 +178,20 @@ for (const { slug, title, abstract } of recipeEntries) {
   if (recipe.indexOf(abstract) === -1 || recipe.indexOf(abstract) > recipe.indexOf("<pre")) {
     fail(`${title} Recipe must render its abstract before the artifact`);
   }
+}
+
+const htdpSource = readFileSync("src/content/recipes/htdp.md", "utf8");
+for (const expected of [
+  "## Compiler-Driven Wish Discovery",
+  "Before moving from one layer to the next lower layer",
+  "## Wish Implementation",
+  "A blocked result should include the wish, layer, last command",
+  "## Optional Functional Core / Imperative Shell Architecture",
+  "Feed effect results back as `Event` values.",
+  "## Post-Concrete Abstraction",
+  "Revert or abandon an abstraction if it makes diagnostics harder",
+]) {
+  if (!htdpSource.includes(expected)) fail(`HtDP Recipe is missing bundled companion content: ${expected}`);
 }
 
 const articleScript = outputFiles
